@@ -11,6 +11,8 @@ commands:
       - run: echo << parameters.to >>
 
 jobs:
+  docker:
+     - image: circleci/node:13.8.0
   my-job:
     steps:
       - print_pipeline_id:

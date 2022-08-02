@@ -6,9 +6,9 @@ commands:
     parameters:
       to:
         type: string
-        default: "my pipline id is"
+        default: "no ID"
     steps:
-      - run: echo << parameters.to >>
+      - run: echo "The pipeline id is << parameters.to >>"
 
 jobs:
   my-job:

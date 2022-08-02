@@ -69,9 +69,9 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  print_pipeline_id:
+  my-job:
     jobs:
-      - print_pipeline_id
+      - my-job
       # - say-hello:
       #      requires:
       #        - save_hello_world_output     

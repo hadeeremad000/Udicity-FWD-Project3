@@ -1,36 +1,33 @@
-version: 2.1
 
 jobs:
   save_hello_world_output:
     docker:
       - image: circleci/node:13.8.0 
+    steps:  
        - checkout
-       - run:
-           name: "Say world"
-           command: "echo "Hekki. World" > output.txt"
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - echo-output           
-
+       - run: mkdir -p workspace
+       - run: echo "Hello, world!" > workspace/echo-output
+          
+       - persist_to_workspace:
+           root: workspace
+           paths:
+             - echo-output           
   say-hello:
     docker:
       - image: cimg/base:stable
     steps:
-      - attach_workspace:
+       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: /tmp/workspace    
        - checkout
        - run: |
            if [[ `cat /tmp/workspace/echo-output` == "Hello, world!" ]]; then
             echo "It worked!";
-          else
+           else
             echo "Nope!"; exit 1
-          fi
+           fi
 
           #command: "echo Hello, World!"
-
-
 
   say-world:
     docker:

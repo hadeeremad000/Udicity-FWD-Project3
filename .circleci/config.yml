@@ -1,22 +1,46 @@
 version: 2.1
 
-commands:
-  print_pipeline_id:
-    description: "A very simple command for demonstration purposes"
-    parameters:
-      to:
-        type: string
-        default: "no ID"
-    steps:
-      - run: echo "The pipeline id is << parameters.to >>"
+# commands:
+#   print_pipeline_id:
+#     description: "A very simple command for demonstration purposes"
+#     parameters:
+#       to:
+#         type: string
+#         default: "no ID"
+#     steps:
+#       - run: echo "The pipeline id is << parameters.to >>"
 
 jobs:
-  my-job:
+
+  test_on_fail:
      docker:
-     - image: circleci/node:13.8.0
+     - image: circleci/node:13.8.0 
      steps:
-      - print_pipeline_id:
-          to: "${CIRCLE_WORKFLOW_ID}"
+       - run:
+           name: Testing application
+           command: make test
+           shell: /bin/bash
+           working_directory: ~/my-app
+           no_output_timeout: 30m
+           environment:
+             FOO: bar
+
+       - run: echo 127.0.0.1 devhost | sudo tee -a /etc/hosts
+
+       - run: |
+          sudo -u root createuser -h localhost --superuser ubuntu &&
+          sudo createdb -h localhost test_db
+
+       - run:
+           name: Upload Failed Tests
+           command: curl --data fail_tests.log http://example.com/error_logs
+           when: on_fail
+  # my-job:
+  #    docker:
+  #    - image: circleci/node:13.8.0
+  #    steps:
+  #     - print_pipeline_id:
+  #         to: "${CIRCLE_WORKFLOW_ID}"
 
   # save_hello_world_output:
   #   docker:
@@ -71,7 +95,8 @@ jobs:
 workflows:
    my-job:
     jobs:
-      - my-job
+      - test_on_fail
+      #- my-job
       # - say-hello:
       #      requires:
       #        - save_hello_world_output     

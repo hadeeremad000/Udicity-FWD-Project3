@@ -1,31 +1,47 @@
 version: 2.1
-jobs:
-  save_hello_world_output:
-    docker:
-      - image: circleci/node:13.8.0 
-    steps:  
-       - checkout
-       - run: mkdir -p workspace
-       - run: echo "Hello, world!" > workspace/echo-output
-          
-       - persist_to_workspace:
-           root: workspace
-           paths:
-             - echo-output           
-  say-hello:
-    docker:
-      - image: circleci/node:13.8.0 
+
+commands:
+  print_pipeline_id:
+    description: "A very simple command for demonstration purposes"
+    parameters:
+      to:
+        type: string
+        default: "my pipline id is"
     steps:
-       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: /tmp/workspace  
-       - checkout
-       - run: |
-           if [[ `cat /tmp/workspace/echo-output` == "Hello, world!" ]]; then
-            echo "It worked!";
-           else
-            echo "Nope!"; exit 1
-           fi
+      - run: echo << parameters.to >>
+
+jobs:
+  my-job:
+    steps:
+      - print_pipeline_id:
+        to: $CIRCLE_WORKFLOW_ID
+
+  # save_hello_world_output:
+  #   docker:
+  #     - image: circleci/node:13.8.0 
+  #   steps:  
+  #      - checkout
+  #      - run: mkdir -p workspace
+  #      - run: echo "Hello, world!" > workspace/echo-output
+          
+  #      - persist_to_workspace:
+  #          root: workspace
+  #          paths:
+  #            - echo-output           
+  # say-hello:
+  #   docker:
+  #     - image: circleci/node:13.8.0 
+  #   steps:
+  #      - attach_workspace:
+  #         # Must be absolute path or relative path from working_directory
+  #         at: /tmp/workspace  
+  #      - checkout
+  #      - run: |
+  #          if [[ `cat /tmp/workspace/echo-output` == "Hello, world!" ]]; then
+  #           echo "It worked!";
+  #          else
+  #           echo "Nope!"; exit 1
+  #          fi
 
           #command: "echo Hello, World!"
 
@@ -53,10 +69,10 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - save_hello_world_output
-      - say-hello:
-           requires:
-             - save_hello_world_output     
+      - print_pipeline_id
+      # - say-hello:
+      #      requires:
+      #        - save_hello_world_output     
       #- PRINT_ENV_VAR
       # - say-hello
       # - say-world:

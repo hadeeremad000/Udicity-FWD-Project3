@@ -29,23 +29,23 @@ jobs:
 
           #command: "echo Hello, World!"
 
-  say-world:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-       - checkout
-       - run:
-           name: "Say world"
-           command: "echo Hello, print world new!"          
+  # say-world:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #      - checkout
+  #      - run:
+  #          name: "Say world"
+  #          command: "echo Hello, print world new!"          
 
-  PRINT_ENV_VAR:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - run:
-          name: "PRINT var"
-          command: "echo $ENV_TEST"
+  # PRINT_ENV_VAR:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "PRINT var"
+  #         command: "echo $ENV_TEST"
         
 
 # Invoke jobs via workflows
@@ -54,8 +54,11 @@ workflows:
   say-hello-workflow:
     jobs:
       - save_hello_world_output
-      - PRINT_ENV_VAR
       - say-hello
-      - say-world:
-          requires:
-            - say-hello
+           requires:
+             - save_hello_world_output     
+      #- PRINT_ENV_VAR
+      # - say-hello
+      # - say-world:
+      #     requires:
+      #       - say-hello

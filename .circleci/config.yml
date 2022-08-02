@@ -54,7 +54,7 @@ workflows:
   say-hello-workflow:
     jobs:
       - save_hello_world_output
-      - say-hello
+      - say-hello:
            requires:
              - save_hello_world_output     
       #- PRINT_ENV_VAR

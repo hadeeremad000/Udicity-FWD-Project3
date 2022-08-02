@@ -12,8 +12,6 @@ commands:
 
 jobs:
   my-job:
-     environment: 
-        CIRCLE_WORKFLOW_ID: <<  >>
      docker:
      - image: circleci/node:13.8.0
      steps:
@@ -71,7 +69,7 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-   test-env-vars:
+   my-job:
     jobs:
       - my-job
       # - say-hello:

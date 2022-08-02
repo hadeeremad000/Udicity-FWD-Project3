@@ -18,7 +18,7 @@ jobs:
     steps:
        - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: tmp/workspace  
+          at: /tmp/workspace  
        - checkout
        - run: |
            if [[ `cat /tmp/workspace/echo-output` == "Hello, world!" ]]; then

@@ -30,7 +30,7 @@ jobs:
           command: "echo Hello, print world new!"          
 
     PRINT_ENV_VAR:
-    docker:
+      docker:
       - image: circleci/node:13.8.0
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps

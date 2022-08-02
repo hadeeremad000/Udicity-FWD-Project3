@@ -11,12 +11,12 @@ commands:
       - run: echo << parameters.to >>
 
 jobs:
-  docker:
-     - image: circleci/node:13.8.0
   my-job:
-    steps:
+     docker:
+     - image: circleci/node:13.8.0
+     steps:
       - print_pipeline_id:
-        to: $CIRCLE_WORKFLOW_ID
+        to: ${CIRCLE_WORKFLOW_ID}
 
   # save_hello_world_output:
   #   docker:

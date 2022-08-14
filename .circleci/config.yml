@@ -10,7 +10,7 @@ jobs:
         - run:
            name: Create Cloudformation Stack
            command: |
-             aws cloudformation update-stack --template-file template.yml --stack-name myStack-48370 --region us-east-1
+             aws cloudformation update-stack --stack-name myStack-48370 --template-file template.yml --region us-east-1
   configure_infrastructure:
       docker:
         - image: python:3.7-alpine3.11

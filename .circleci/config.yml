@@ -10,7 +10,11 @@ jobs:
         - run: 
            name: Create Cloudformation Stack
            command: |
-             aws cloudformation create-stack  --stack-name networkstack  --template-body file://network.yml --parameters file://network-parameters.json --region=us-east-1
+                  aws cloudformation deploy \
+                --template-file template.yml \
+                --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+                --region us-east-1  
+
 workflows:
   myWorkflow:
     jobs:

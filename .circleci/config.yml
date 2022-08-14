@@ -10,8 +10,30 @@ jobs:
         - run:
            name: Create Cloudformation Stack
            command: |
-             aws cloudformation create-stack  --stack-name networkstack  --template-body file://network.yml --parameters file://network-parameters.json --region=us-east-1
+             aws cloudformation deploy \
+               --template-file template.yml \
+               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+               --region us-east-1
+  configure_infrastructure:
+      docker:
+        - image: python:3.7-alpine3.11
+      steps:
+       - checkout
+       - add_ssh_keys:
+             # You can get this ID in the section where you registered the SSH Key
+             fingerprints: ["8b:05:b2:00:a7:f2:40:16:3d:eb:c6:d0:5c:1c:df:50"]
+       - run:
+          name: Install Ansible
+          command: |
+             apk add --update ansible
+          # Install Ansible
+       - run:
+          name: Run Playbook and Configure server
+          command: |
+            ansible-playbook -i inventory.txt main.yml
+
 workflows:
   myWorkflow:
     jobs:
       - myjob1
+      - configure_infrastructure  

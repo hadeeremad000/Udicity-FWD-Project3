@@ -1,22 +1,18 @@
 version: 2.1
-# Use a package of configuration called an orb.
-orbs:
-  # Choose either one of the orbs below
-  # welcome: circleci/welcome-orb@0.4.1
-  # aws-cli: circleci/aws-cli@2.0.3
-# Define the jobs we want to run for this project
+
 jobs:
   myjob1:  # Choose any name, such as `build`
       # The primary container, where your job's commands will run
       docker:
-        - image: 
+        - image: amazon/aws-cli
       steps:
         - checkout # check out the code in the project directory
-        - run: echo "hello world" # run the `echo` command
-# Sequential workflow
+        - run: 
+           name: Create Cloudformation Stack
+           command: |
+             aws cloudformation create-stack  --stack-name networkstack  --template-body file://network.yml --parameters file://network-parameters.yml --region=us-east-1
 workflows:
-  # Name the workflow
   myWorkflow:
     jobs:
       - myjob1
-      - myjob2
+   

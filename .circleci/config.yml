@@ -1,107 +1,22 @@
 version: 2.1
-
-# commands:
-#   print_pipeline_id:
-#     description: "A very simple command for demonstration purposes"
-#     parameters:
-#       to:
-#         type: string
-#         default: "no ID"
-#     steps:
-#       - run: echo "The pipeline id is << parameters.to >>"
-
+# Use a package of configuration called an orb.
+orbs:
+  # Choose either one of the orbs below
+  # welcome: circleci/welcome-orb@0.4.1
+  # aws-cli: circleci/aws-cli@2.0.3
+# Define the jobs we want to run for this project
 jobs:
-
-  test_on_fail:
-     docker:
-     - image: circleci/node:13.8.0 
-     steps:
-       - run: exit 1
-          #  name: Testing application
-          #  command: make test
-      #      shell: /bin/bash
-      #      working_directory: ~/my-app
-      #      no_output_timeout: 30m
-      #      environment:
-      #        FOO: bar
-
-      #  - run: echo 127.0.0.1 devhost | sudo tee -a /etc/hosts
-
-      #  - run: |
-      #     sudo -u root createuser -h localhost --superuser ubuntu &&
-      #     sudo createdb -h localhost test_db
-
-       - run:
-           name: Upload Failed Tests
-           command: echo " Hello Error "
-           when: on_fail
-  # my-job:
-  #    docker:
-  #    - image: circleci/node:13.8.0
-  #    steps:
-  #     - print_pipeline_id:
-  #         to: "${CIRCLE_WORKFLOW_ID}"
-
-  # save_hello_world_output:
-  #   docker:
-  #     - image: circleci/node:13.8.0 
-  #   steps:  
-  #      - checkout
-  #      - run: mkdir -p workspace
-  #      - run: echo "Hello, world!" > workspace/echo-output
-          
-  #      - persist_to_workspace:
-  #          root: workspace
-  #          paths:
-  #            - echo-output           
-  # say-hello:
-  #   docker:
-  #     - image: circleci/node:13.8.0 
-  #   steps:
-  #      - attach_workspace:
-  #         # Must be absolute path or relative path from working_directory
-  #         at: /tmp/workspace  
-  #      - checkout
-  #      - run: |
-  #          if [[ `cat /tmp/workspace/echo-output` == "Hello, world!" ]]; then
-  #           echo "It worked!";
-  #          else
-  #           echo "Nope!"; exit 1
-  #          fi
-
-          #command: "echo Hello, World!"
-
-  # say-world:
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #      - checkout
-  #      - run:
-  #          name: "Say world"
-  #          command: "echo Hello, print world new!"          
-
-  # PRINT_ENV_VAR:
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: "PRINT var"
-  #         command: "echo $ENV_TEST"
-        
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  myjob1:  # Choose any name, such as `build`
+      # The primary container, where your job's commands will run
+      docker:
+        - image: 
+      steps:
+        - checkout # check out the code in the project directory
+        - run: echo "hello world" # run the `echo` command
+# Sequential workflow
 workflows:
-   my-job:
+  # Name the workflow
+  myWorkflow:
     jobs:
-      - test_on_fail
-      #- my-job
-      # - say-hello:
-      #      requires:
-      #        - save_hello_world_output     
-      #- PRINT_ENV_VAR
-      # - say-hello
-      # - say-world:
-      #     requires:
-      #       - say-hello
+      - myjob1
+      - myjob2

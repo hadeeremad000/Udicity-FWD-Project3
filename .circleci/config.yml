@@ -45,11 +45,12 @@ jobs:
             ansible-playbook -i inventory.txt main.yml
 
 workflows:
- workflow:
+  myWorkflow:        
     jobs:
       - myjob1 
       - copyipjob:
-              requires: myjob1
+              requires:
+                -  myjob1
       - configure_infrastructure:
               requires:
                 - copyipjob  

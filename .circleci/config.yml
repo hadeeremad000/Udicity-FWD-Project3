@@ -11,14 +11,14 @@ jobs:
            name: Install tar utility
            command: |
              yum install -y tar gzip     
-        - run: 
-           name: create directory
-           command: |
-              mkdir ~/temp
-        - run:
-           name: create file
-           command: |
-              touch ~/temp/inventoryX.txt     
+             # - run: 
+             #name: create directory
+             #command: |
+             #mkdir ~/temp
+             #- run:
+             #name: create file
+             #command: |
+             #touch ~/temp/inventoryX.txt     
         - run:
            name: Create Cloudformation Stack
            command: |
@@ -31,23 +31,23 @@ jobs:
            command: |
              aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> ~/temp/inventoryX.txt
+              --output text >> /tmp/workspace/output.txt
         - persist_to_workspace:
-             root: ~/temp
+             root: /tmp/workspace
              paths: 
-               - inventoryX.txt
+               - output.txt
         - run:
            name: check ip attached
            command: | 
-             cat ~/temp/inventoryX.txt 
+             cat /tmp/workspace/output.txt 
   configure_infrastructure:
       docker:
        - image: python:3.7-alpine3.11
       steps:      
         - checkout
         - attach_workspace:
-            at: ~/temp
-        - run: echo ~/temp/inventoryX.txt >> inventory.txt
+            at: /tmp/workspace
+        - run: echo /tmp/workspace/output.txt >> inventory.txt
         - run: cat inventory.txt
         - add_ssh_keys:
              # You can get this ID in the section where you registered the SSH Key

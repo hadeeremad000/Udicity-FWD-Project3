@@ -1,19 +1,6 @@
 version: 2.1
 
-jobs:
-  myjob1:  # Choose any name, such as `build`
-      # The primary container, where your job's commands will run
-      docker:
-        - image: amazon/aws-cli
-      steps:
-        - checkout # check out the code in the project directory
-        - run:
-           name: Create Cloudformation Stack
-           command: |
-             aws cloudformation validate-template \
-               --template-file template.yml \
-               --stack-name myStack-48370 \
-               --region us-east-1                   
+jobs:                 
   configure_infrastructure:
       docker:
         - image: python:3.7-alpine3.11
@@ -35,7 +22,5 @@ jobs:
 workflows:
   myWorkflow:
     jobs:
-            #- myjob1
       - configure_infrastructure:
-              # requires:
-                  # - myjob1   
+             

@@ -10,7 +10,7 @@ jobs:
         - run:
            name: Create Cloudformation Stack
            command: |
-             aws cloudformation stack-update \
+             aws cloudformation validate-template \
                --template-file template.yml \
                --stack-name myStack-48370 \
                --region us-east-1                   

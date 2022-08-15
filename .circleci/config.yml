@@ -1,6 +1,31 @@
 version: 2.1
 
-jobs:                 
+jobs:
+  myjob1:  # Choose any name, such as `build`
+      # The primary container, where your job's commands will run
+      docker:
+        - image: amazon/aws-cli
+      steps:
+        - checkout # check out the code in the project directory
+        - run:
+           name: Create Cloudformation Stack
+           command: |
+             aws cloudformation deploy \
+               --template-file template.yml \
+               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+               --region us-east-1
+  copyipjob:
+      docker:
+        - image: amazon/aws-cli
+      steps:
+        - checkout
+        - run: 
+           name: copy ip in inventory file
+           command: |
+             aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text >> inventory       
+            
   configure_infrastructure:
       docker:
         - image: python:3.7-alpine3.11
@@ -22,5 +47,8 @@ jobs:
 workflows:
   myWorkflow:
     jobs:
-      - configure_infrastructure
-             
+      - myjob1      
+      - copyipjob
+      - configure_infrastructure:
+              requires:
+                - copyipjob  

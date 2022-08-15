@@ -45,7 +45,7 @@ jobs:
             ansible-playbook -i inventory.txt main.yml
 
 workflows:
-  myWorkflow:
+ workflow:
     jobs:
       - myjob1 
       - copyipjob:

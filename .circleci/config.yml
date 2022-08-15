@@ -19,25 +19,25 @@ jobs:
       docker:
        - image: amazon/aws-cli
       steps:
-       - checkout
-       - add_ssh_keys:
+        - checkout
+        - add_ssh_keys:
              # You can get this ID in the section where you registered the SSH Key
              fingerprints: ["8b:05:b2:00:a7:f2:40:16:3d:eb:c6:d0:5c:1c:df:50"]
-       - run:
-         name: copy ip in inventory file
-         command: |
-           aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --output text >> inventory     
-       - run:
-          name: Install Ansible
-          command: |
-             apk add --update ansible
+        - run:
+           name: copy ip in inventory file
+           command: |
+             aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text >> inventory     
+        - run:
+           name: Install Ansible
+           command: |
+              apk add --update ansible
           # Install Ansible
-       - run:
-          name: Run Playbook and Configure server
-          command: |
-            ansible-playbook -i inventory.txt main.yml
+        - run:
+           name: Run Playbook and Configure server
+           command: |
+             ansible-playbook -i inventory.txt main.yml
 
 workflows:
   myWorkflow:        

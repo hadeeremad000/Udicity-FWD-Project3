@@ -14,21 +14,28 @@ jobs:
               --template-file template.yml \
               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
               --region us-east-1 
-            
-  configure_infrastructure:
-      docker:
-       - image: python:3.7-alpine3.11
-      steps:
-        - checkout
-        - add_ssh_keys:
-             # You can get this ID in the section where you registered the SSH Key
-             fingerprints: ["8b:05:b2:00:a7:f2:40:16:3d:eb:c6:d0:5c:1c:df:50"]
         - run:
            name: copy ip in inventory file
            command: |
              aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> inventory     
+              --output text >> inventory.txt 
+         - persist_to_workspace:
+            root: ~/
+            paths: - inventory.txt
+           
+  configure_infrastructure:
+      docker:
+       - image: python:3.7-alpine3.11
+      steps:      
+        - checkout
+        - attach_workspace:
+            at: ~/
+        - run: echo ~/output.txt >> inventory.txt
+        - add_ssh_keys:
+             # You can get this ID in the section where you registered the SSH Key
+             fingerprints: ["8b:05:b2:00:a7:f2:40:16:3d:eb:c6:d0:5c:1c:df:50"]
+      
         - run:
            name: Install Ansible
            command: |

@@ -37,7 +37,7 @@ jobs:
         - attach_workspace:
             at: ~/
         - run: echo ~/output.txt >> inventory.txt
-        - run: cat ~/inventory.txt
+        - run: cat inventory.txt
         - add_ssh_keys:
              # You can get this ID in the section where you registered the SSH Key
              fingerprints: ["8b:05:b2:00:a7:f2:40:16:3d:eb:c6:d0:5c:1c:df:50"]

@@ -36,7 +36,10 @@ jobs:
              root: ~/temp
              paths: 
                - inventoryX.txt
-           
+        - run:
+           name: check ip attached
+           command: | 
+             cat ~/temp/inventoryX.txt 
   configure_infrastructure:
       docker:
        - image: python:3.7-alpine3.11
@@ -64,6 +67,6 @@ workflows:
   myWorkflow:        
     jobs:
       - myjob1
-      - configure_infrastructure:
-          requires:
-            - myjob1
+        # - configure_infrastructure:
+            # requires:
+            #- myjob1

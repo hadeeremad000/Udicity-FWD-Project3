@@ -17,7 +17,7 @@ jobs:
             
   configure_infrastructure:
       docker:
-        - image: amazon/aws-cli
+       - image: amazon/aws-cli
       steps:
        - checkout
        - add_ssh_keys:
@@ -26,9 +26,9 @@ jobs:
        - run:
          name: copy ip in inventory file
          command: |
-             aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> inventory     
+           aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --output text >> inventory     
        - run:
           name: Install Ansible
           command: |

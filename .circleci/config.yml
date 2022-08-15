@@ -23,7 +23,7 @@ jobs:
            command: |
              aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> output.txt
+              --output text >> ~/output.txt
         - persist_to_workspace:
              root: ~/
              paths: 

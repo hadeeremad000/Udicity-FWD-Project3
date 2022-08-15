@@ -8,6 +8,10 @@ jobs:
       steps:
         - checkout # check out the code in the project directory
         - run:
+           name: Install tar utility
+           command: |
+             yum install -y tar gzip          
+        - run:
            name: Create Cloudformation Stack
            command: |
              aws cloudformation deploy \

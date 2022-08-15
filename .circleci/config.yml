@@ -47,7 +47,7 @@ jobs:
         - checkout
         - attach_workspace:
             at: ~/tmp
-        - run: cat output.txt >> inventory.txt
+        - run: cat ~/tmp/output.txt >> inventory.txt
         - run: cat inventory.txt
         - add_ssh_keys:
              # You can get this ID in the section where you registered the SSH Key

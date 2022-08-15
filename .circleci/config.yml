@@ -67,6 +67,6 @@ workflows:
   myWorkflow:        
     jobs:
       - myjob1
-        # - configure_infrastructure:
-            # requires:
-            #- myjob1
+      - configure_infrastructure:
+           requires:
+            - myjob1

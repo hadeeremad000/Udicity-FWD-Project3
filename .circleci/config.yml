@@ -23,11 +23,11 @@ jobs:
            command: |
              aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> ~/output.txt
+              --output text >> inventoryX.txt
         - persist_to_workspace:
              root: ~/
              paths: 
-               - output.txt
+               - inventoryX.txt
            
   configure_infrastructure:
       docker:
@@ -35,8 +35,8 @@ jobs:
       steps:      
         - checkout
         - attach_workspace:
-            at: ~/
-        - run: echo ~/output.txt >> inventory.txt
+            at: ~/inventoryX.txt
+        - run: echo inventoryX.txt >> inventory.txt
         - run: cat inventory.txt
         - add_ssh_keys:
              # You can get this ID in the section where you registered the SSH Key

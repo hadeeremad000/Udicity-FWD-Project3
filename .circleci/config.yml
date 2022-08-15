@@ -25,11 +25,7 @@ jobs:
              aws cloudformation deploy \
               --template-file template.yml \
               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
-              --region us-east-1
-        - persist_to_workspace:
-             root: ~/tmp
-             paths:
-               - output.txt              
+              --region us-east-1             
         - run:
            name: copy ip in inventory file
            command: |
@@ -39,7 +35,11 @@ jobs:
         - run:
            name: check ip attached
            command: | 
-             cat ~/tmp/output.txt 
+             cat ~/tmp/output.txt
+        - persist_to_workspace:
+             root: ~/tmp
+             paths:
+               - output.txt             
   configure_infrastructure:
       docker:
        - image: python:3.7-alpine3.11
@@ -47,7 +47,7 @@ jobs:
         - checkout
         - attach_workspace:
             at: ~/tmp
-        - run: cat ~/tmp/output.txt >> inventory.txt
+        - run: cat output.txt >> inventory.txt
         - run: cat inventory.txt
         - add_ssh_keys:
              # You can get this ID in the section where you registered the SSH Key

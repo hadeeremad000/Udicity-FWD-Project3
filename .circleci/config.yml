@@ -47,8 +47,9 @@ jobs:
 workflows:
   myWorkflow:
     jobs:
-      - myjob1      
-      - copyipjob
+      - myjob1 
+      - copyipjob:
+              requires: myjob1
       - configure_infrastructure:
               requires:
                 - copyipjob  

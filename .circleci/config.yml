@@ -10,7 +10,15 @@ jobs:
         - run:
            name: Install tar utility
            command: |
-             yum install -y tar gzip          
+             yum install -y tar gzip     
+        - run: 
+           name: create directory
+           command: |
+              mkdir ~/temp
+        - run:
+           name: create file
+           command: |
+              touch ~/temp/inventoryX.txt     
         - run:
            name: Create Cloudformation Stack
            command: |
@@ -25,7 +33,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> inventoryX.txt
         - persist_to_workspace:
-             root: ~/
+             root: ~/temp
              paths: 
                - inventoryX.txt
            

@@ -4,22 +4,21 @@ jobs:
   myjob1:  # Choose any name, such as `build`
       # The primary container, where your job's commands will run
       docker:
-        - image: amazon/aws-cli
-      working_directory: /tmp    
+        - image: amazon/aws-cli   
       steps:
         - checkout # check out the code in the project directory
         - run:
            name: Install tar utility
            command: |
              yum install -y tar gzip     
-             # - run: 
-             #name: create directory
-             #command: |
-             #mkdir ~/temp
-             #- run:
-             #name: create file
-             #command: |
-             #touch ~/temp/inventoryX.txt     
+        - run: 
+           name: create directory
+           command: |
+             mkdir ~/tmp
+        - run:
+           name: create file
+           command: |
+             touch ~/tmp/output.txt     
         - run:
            name: Create Cloudformation Stack
            command: |
@@ -28,7 +27,7 @@ jobs:
               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
               --region us-east-1
         - persist_to_workspace:
-             root: workspace
+             root: ~/tmp
              paths:
                - output.txt              
         - run:
@@ -36,19 +35,19 @@ jobs:
            command: |
              aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> /tmp/workspace/output.txt
+              --output text >> ~/tmp/output.txt
         - run:
            name: check ip attached
            command: | 
-             cat /tmp/workspace/output.txt 
+             cat ~/tmp/output.txt 
   configure_infrastructure:
       docker:
        - image: python:3.7-alpine3.11
       steps:      
         - checkout
         - attach_workspace:
-            at: /tmp/workspace
-        - run: echo /t  mp/workspace/output.txt >> inventory.txt
+            at: ~/tmp
+        - run: echo ~/tmp/output.txt >> inventory.txt
         - run: cat inventory.txt
         - add_ssh_keys:
              # You can get this ID in the section where you registered the SSH Key

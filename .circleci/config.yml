@@ -1,5 +1,4 @@
 version: 2.1
-
 jobs:
   myjob1:  # Choose any name, such as `build`
       # The primary container, where your job's commands will run

@@ -76,11 +76,11 @@ jobs:
     docker:
     - image: alpine:latest
     steps:
-    - run:
-       name: Test job
+     - run:
+         name: Test job
        # Fail the job intentionally to simulate an error.
-       command:  return 1
-    - destroy_environment
+         command:  return 1
+          - destroy_environment
 workflows:
   myWorkflow:        
     jobs:
